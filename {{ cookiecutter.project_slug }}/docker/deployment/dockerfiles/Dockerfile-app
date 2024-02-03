@@ -1,0 +1,27 @@
+FROM python:3.11.1-slim-buster
+
+# Initial update & initial dependencies
+RUN apt-get update && apt-get install -y supervisor gcc g++ python3-dev curl gnupg \
+    libpango-1.0-0 \
+    libpangoft2-1.0-0 \
+    libpangocairo-1.0-0 \
+    libjpeg-dev \
+    libopenjp2-7-dev \
+    libffi-dev \
+    libglib2.0-dev
+
+# cleaning up unused files
+RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install requirements
+COPY ./requirements.txt /requirements.txt
+RUN pip install -r /requirements.txt
+
+# supervisor conf & related files
+COPY ./docker/deployment/conf/supervisord.conf /etc/supervisor/supervisord.conf
+
+# Custom working directory
+WORKDIR /app
+
+# NOTE: One file is enough for both backend & supervisor, no big change.

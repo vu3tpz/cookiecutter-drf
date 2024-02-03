@@ -1,0 +1,22 @@
+{
+    "project_name": "My Django Project",
+    "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+    "description": "Behold My Awesome Django Project!",
+    "author_name": "Daniel Roy Greenfeld",
+    "email": "{{ cookiecutter.author_name.lower() | trim() |replace(' ', '-') }}@gmail.com",
+    "open_source_license": [
+      "MIT",
+      "BSD",
+      "GPLv3",
+      "Apache Software License 2.0",
+      "Not open source"
+    ],
+    "timezone": "UTC",
+    "username_type": ["username", "email"],
+    "use_docker": "y",
+    "use_drf": "y",
+    "use_redis": "y",
+    "use_django_rq": "y",
+    "use_async": "y",
+    "use_simple_jwt": "y"
+}

@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  payrentz:
+    container_name: payrentz
+    build:
+      context: ../../
+      dockerfile: ./docker/deployment/dockerfiles/Dockerfile-app
+    volumes:
+      - ../../:/app:z
+    env_file:
+      - ../../.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - supervisor
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: bash -c "gunicorn config.wsgi -b 0.0.0.0:8000 --chdir=/app --reload"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  supervisor:
+    build:
+      context: ../../
+      dockerfile: ./docker/deployment/dockerfiles/Dockerfile-app
+    volumes:
+      - ../../:/app:z
+    env_file:
+      - ../../.env
+    ports:
+      - "5555:5555"
+      - "9001:9001"
+    depends_on:
+      - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
