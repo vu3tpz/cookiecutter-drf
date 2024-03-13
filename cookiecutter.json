@@ -1,9 +1,6 @@
 {
-    "project_name": "My Django Project",
+    "project_name": "My New Project",
     "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
-    "description": "Behold My Awesome Django Project!",
-    "author_name": "Vishnu M",
-    "email": "{{ cookiecutter.author_name.lower() | trim() |replace(' ', '-') }}@gmail.com",
-    "use_docker": "y",
-    "docker_container_name": "{{ 'my_default_container_name' if cookiecutter.use_docker.lower() == 'y' else '' }}"
+    "use_docker": "Yes/No",
+    "docker_container_name": "{{ 'my_default_container_name' if cookiecutter.use_docker.lower() == 'yes' else '' }}"
 }
