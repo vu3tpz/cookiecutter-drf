@@ -1,5 +1,5 @@
-from django.core import exceptions
 from apps.common.helpers import is_any_or_list1_in_list2
+from django.core import exceptions
 
 
 class HasValidPermissionMixin:

@@ -1,10 +1,10 @@
+from django.contrib.auth.models import BaseUserManager
 from django.core.exceptions import (
     MultipleObjectsReturned,
     ObjectDoesNotExist,
     ValidationError,
 )
 from django.db.models import QuerySet
-from django.contrib.auth.models import BaseUserManager
 
 
 class UserManager(BaseUserManager):

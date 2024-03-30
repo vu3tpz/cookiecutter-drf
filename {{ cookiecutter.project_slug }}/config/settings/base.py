@@ -1,12 +1,14 @@
+import os
 from pathlib import Path
-import environ, os
+
+import environ
 from corsheaders.defaults import default_headers
 
 # General
 # ------------------------------------------------------------------------------
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 APPS_DIR = ROOT_DIR / "apps"
-SECRET_KEY = 'django-insecure-&3s#_f9e*6*f40&7im%$r4_t&#vl2urwp)k$%_+zw(gcd)l7^!'
+SECRET_KEY = "django-insecure-&3s#_f9e*6*f40&7im%$r4_t&#vl2urwp)k$%_+zw(gcd)l7^!"
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 

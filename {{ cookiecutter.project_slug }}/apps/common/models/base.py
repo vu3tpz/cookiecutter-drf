@@ -1,10 +1,10 @@
 import uuid
 from contextlib import suppress
+
+from apps.common.managers import BaseObjectManagerQuerySet
 from django.conf import settings
 from django.core.exceptions import FieldDoesNotExist
 from django.db import models
-from apps.common.managers import BaseObjectManagerQuerySet
-
 
 # top level config
 COMMON_CHAR_FIELD_MAX_LENGTH = 512

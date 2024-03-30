@@ -1,9 +1,9 @@
-from rest_framework import serializers
-from rest_framework.fields import SkipField
-from rest_framework.serializers import ModelSerializer, Serializer
 from apps.common import model_fields
 from apps.common.config import CUSTOM_ERRORS_MESSAGES
 from django.db import models
+from rest_framework import serializers
+from rest_framework.fields import SkipField
+from rest_framework.serializers import ModelSerializer, Serializer
 
 
 class CustomErrorMessagesMixin:
