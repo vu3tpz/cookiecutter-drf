@@ -24,7 +24,7 @@ env.read_env(str(ROOT_DIR / ".env"))
 # Timezone & Localization
 # ------------------------------------------------------------------------------
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+TIME_ZONE = "{{ cookiecutter.timezone }}"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = False
