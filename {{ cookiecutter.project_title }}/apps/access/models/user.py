@@ -1,6 +1,3 @@
-from django.contrib.auth.models import AbstractUser
-from django.db import models
-
 from apps.common.managers import UserManager
 from apps.common.model_fields import AppPhoneNumberField, AppSingleChoiceField
 from apps.common.models import (
@@ -8,6 +5,9 @@ from apps.common.models import (
     COMMON_CHAR_FIELD_MAX_LENGTH,
     BaseModel,
 )
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
 from .config import USER_TITLE_CHOICES
 
 

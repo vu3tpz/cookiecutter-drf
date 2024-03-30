@@ -1,3 +1,6 @@
+from apps.common.pagination import AppPagination
+from apps.common.serializers import AppModelSerializer, simple_serialize_queryset
+from apps.common.views.base import AppCreateAPIView, AppViewMixin
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, parsers
 from rest_framework.decorators import action
@@ -8,9 +11,6 @@ from rest_framework.mixins import (
     UpdateModelMixin,
 )
 from rest_framework.viewsets import GenericViewSet
-from apps.common.pagination import AppPagination
-from apps.common.serializers import AppModelSerializer, simple_serialize_queryset
-from apps.common.views.base import AppCreateAPIView, AppViewMixin
 
 
 class AppGenericViewSet(GenericViewSet):

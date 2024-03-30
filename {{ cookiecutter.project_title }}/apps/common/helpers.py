@@ -1,4 +1,13 @@
-import datetime, json, random, secrets, string, time, typing, inflect, calendar
+import calendar
+import datetime
+import json
+import random
+import secrets
+import string
+import time
+import typing
+
+import inflect
 from dateutil import tz
 from django.conf import settings
 from requests import request

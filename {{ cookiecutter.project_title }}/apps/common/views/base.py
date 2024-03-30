@@ -1,11 +1,12 @@
 from contextlib import suppress
+
+from apps.common.config import API_RESPONSE_ACTION_CODES
 from rest_framework import permissions, status
 from rest_framework.exceptions import MethodNotAllowed, NotFound
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.status import is_success
 from rest_framework.views import APIView
-from apps.common.config import API_RESPONSE_ACTION_CODES
 
 
 class NonAuthenticatedAPIMixin:

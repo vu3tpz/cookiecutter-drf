@@ -1,8 +1,9 @@
-from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
+import uuid
+
 from apps.common.helpers import get_display_name_for_slug
 from apps.common.models import COMMON_CHAR_FIELD_MAX_LENGTH
-import uuid
+from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class BaseField:

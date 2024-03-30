@@ -1,6 +1,7 @@
 {
     "project_name": "My New Project",
     "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+    "project_title": "{{ cookiecutter.project_name.lower()|replace(' ', '-')|replace('.', '-')|trim() }}",
     "use_docker": "Yes/No",
-    "docker_container_name": "{{ 'my_default_container_name' if cookiecutter.use_docker.lower() == 'yes' else '' }}"
+    "docker_container_name": "{{ project_title if cookiecutter.use_docker.lower() == 'yes' else '' }}"
 }
