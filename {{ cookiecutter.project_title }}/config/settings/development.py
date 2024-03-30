@@ -4,7 +4,7 @@ DEBUG = True
 
 # Database Connection
 # ------------------------------------------------------------------------------
-"{% if cookiecutter.local_database == 'PostgreSQL' }"
+"{% if cookiecutter.local_database == 'PostgreSQL' %}"
 DATABASES = {
     # default database user and credentials | others are added on runtime
     "default": {
