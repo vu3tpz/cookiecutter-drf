@@ -6,5 +6,5 @@
   "local_database": ["SQLite", "PostgreSQL"],
   "production_database": ["PostgreSQL"],
   "use_docker": "Yes",
-  "docker_container_name": "{{ cookiecutter.project_title if cookiecutter.use_docker.lower() == 'yes' else 'No Docker' }}",
+  "docker_container_name": "{{ cookiecutter.project_title if cookiecutter.use_docker.lower() == 'yes' else 'No Docker' }}"
 }
