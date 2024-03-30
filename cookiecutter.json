@@ -9,9 +9,5 @@
         "Sqlite",
         "PostgreSQL"
     ],
-    {% if cookiecutter.local_database == "PostgreSQL" %}
-    "database_version": [
-        "16", "15", "14", "13", "12"
-    ],
-    {% endif %}
+    "database_version":"{{ ['16', '15', '14', '13', '12'] if cookiecutter.local_database == 'PostgreSQL' else '' }}"
 }
