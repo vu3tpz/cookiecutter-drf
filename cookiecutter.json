@@ -3,11 +3,10 @@
     "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
     "project_title": "{{ cookiecutter.project_name.lower()|replace(' ', '-')|replace('.', '-')|trim() }}",
     "timezone": "UTC",
-    "use_docker": "Yes/No",
+    "use_docker": "Yes",
     "docker_container_name": "{{ cookiecutter.project_title if cookiecutter.use_docker.lower() == 'yes' else '' }}",
     "local_database": [
         "Sqlite",
         "PostgreSQL"
-    ],
-    "database_version":"{{ ['16', '15', '14', '13', '12'] if cookiecutter.local_database == 'PostgreSQL' else '' }}"
+    ]
 }
