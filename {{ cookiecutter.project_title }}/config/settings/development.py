@@ -4,8 +4,7 @@ DEBUG = True
 
 # Database Connection
 # ------------------------------------------------------------------------------
-{{cookiecutter.local_database}}
-"{% if cookiecutter.local_database == 'PostgreSQL' %}"
+{% if cookiecutter.local_database == 'PostgreSQL' %}
 DATABASES = {
     # default database user and credentials | others are added on runtime
     "default": {
@@ -17,11 +16,11 @@ DATABASES = {
         "PORT": env.str("DATABASE_PORT", default=""),
     }
 }
-"{% else %}"
+{% else %}
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": ROOT_DIR / "db.sqlite3",
     }
 }
-"{% endif %}"
+{% endif %}
