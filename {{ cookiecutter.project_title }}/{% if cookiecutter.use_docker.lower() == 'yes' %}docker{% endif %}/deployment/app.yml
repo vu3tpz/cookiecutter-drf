@@ -1,8 +1,8 @@
-version: '3'
+version: "3"
 
 services:
-  {{ cookiecutter.docker_container_name }}:
-    container_name: {{ cookiecutter.docker_container_name }}
+  { { cookiecutter.docker_container_name } }:
+    container_name: { { cookiecutter.docker_container_name } }
     build:
       context: ../../
       dockerfile: ./docker/deployment/dockerfiles/Dockerfile-app

@@ -1,2 +1,2 @@
-from .base import NonAuthenticatedAPIMixin, AppAPIView, AppCreateAPIView, AppViewMixin
-from .generic import AppModelCUDAPIViewSet, get_upload_api_view, AppModelListAPIViewSet
+from .base import AppAPIView, AppCreateAPIView, AppViewMixin, NonAuthenticatedAPIMixin
+from .generic import AppModelCUDAPIViewSet, AppModelListAPIViewSet, get_upload_api_view
