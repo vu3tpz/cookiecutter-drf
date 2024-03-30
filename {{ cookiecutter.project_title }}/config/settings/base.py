@@ -14,7 +14,7 @@ ALLOWED_HOSTS = ["*"]
 
 # CSRF
 # ------------------------------------------------------------------------------
-CSRF_TRUSTED_ORIGINS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost"]
 
 # Environment Helpers
 # ------------------------------------------------------------------------------
@@ -52,6 +52,7 @@ THIRD_PARTY_APPS = [
 
 CUSTOM_APPS = [
     "apps.common",
+    "apps.access",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
