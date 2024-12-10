@@ -1,44 +1,56 @@
 import uuid
 from contextlib import suppress
 
-from apps.common.managers import BaseObjectManagerQuerySet
 from django.conf import settings
 from django.core.exceptions import FieldDoesNotExist
 from django.db import models
 
-# top level config
-COMMON_CHAR_FIELD_MAX_LENGTH = 512
-COMMON_NULLABLE_FIELD_CONFIG = {  # user for API based stuff
-    "default": None,
-    "null": True,
-}
-COMMON_BLANK_AND_NULLABLE_FIELD_CONFIG = {  # user for Form/app based stuff
-    **COMMON_NULLABLE_FIELD_CONFIG,
-    "blank": True,
-}
+from apps.common.managers import BaseObjectManagerQuerySet
+from apps.common.models import COMMON_BLANK_AND_NULLABLE_FIELD_CONFIG
 
 
 class BaseModel(models.Model):
     """
     Contains the last modified and the created fields, basically
     the base model for the entire app.
+
+    ********************* Model Fields *********************
+        PK          - id
+        Unique      - uuid
+        FK          - created_by, modified_by, deleted_by
+        Datetime    - created, modified, deleted
+        Boolean     - is_active, is_deleted
     """
 
-    # unique id field
+    # UUID
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
-    # time tracking
+    # DateTime fields
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    deleted = models.DateTimeField(**COMMON_BLANK_AND_NULLABLE_FIELD_CONFIG)
 
-    # by whom
+    # ForeignKey fields
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         related_name="created_%(class)s",
         on_delete=models.SET_DEFAULT,
         **COMMON_BLANK_AND_NULLABLE_FIELD_CONFIG,
     )
+    updated_by = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        related_name="updated_%(class)s",
+        on_delete=models.SET_DEFAULT,
+        **COMMON_BLANK_AND_NULLABLE_FIELD_CONFIG,
+    )
+    deleted_by = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        related_name="deleted_by_%(class)s",
+        on_delete=models.SET_DEFAULT,
+        **COMMON_BLANK_AND_NULLABLE_FIELD_CONFIG,
+    )
 
+    # Boolean fields
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
 
@@ -81,35 +93,3 @@ class BaseModel(models.Model):
             return cls._meta.get_field(field_name)
 
         return fallback
-
-
-class FileOnlyModel(BaseModel):
-    """
-    Parent class for all the file only models. This is used as a common class
-    and for differentiating field on the run time.
-
-    This will contain only:
-        file = model_fields.AppSingleFileField(...)
-
-    This model is then linked as a foreign key where ever necessary.
-    """
-
-    class Meta(BaseModel.Meta):
-        abstract = True
-
-
-class BaseIdentityModel(BaseModel):
-    """
-    The model class that includes identity. Identity is basically a `name`.
-    This is applicable for anything like City etc.
-    """
-
-    class Meta(BaseModel.Meta):
-        abstract = True
-
-    identity = models.CharField(max_length=COMMON_CHAR_FIELD_MAX_LENGTH, verbose_name="Name/Title")
-
-    description = models.TextField(**COMMON_BLANK_AND_NULLABLE_FIELD_CONFIG)
-
-    def __str__(self):
-        return self.identity

@@ -1,16 +1,13 @@
-from apps.common.pagination import AppPagination
-from apps.common.serializers import AppModelSerializer, simple_serialize_queryset
-from apps.common.views.base import AppCreateAPIView, AppViewMixin
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, parsers
 from rest_framework.decorators import action
-from rest_framework.mixins import (
-    CreateModelMixin,
-    DestroyModelMixin,
-    ListModelMixin,
-    UpdateModelMixin,
-)
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, ListModelMixin, UpdateModelMixin
 from rest_framework.viewsets import GenericViewSet
+
+from apps.common.helpers import get_display_name_for_slug
+from apps.common.pagination import AppPagination
+from apps.common.serializers import AppModelSerializer, simple_serialize_queryset
+from apps.common.views import AppCreateAPIView, AppViewMixin
 
 
 class AppGenericViewSet(GenericViewSet):
@@ -122,8 +119,6 @@ class AppModelListAPIViewSet(
         this is considered as a standard.
         """
 
-        from apps.common.helpers import get_display_name_for_slug
-
         return [{"id": _, "identity": get_display_name_for_slug(_)} for _ in choices]
 
 
@@ -180,17 +175,31 @@ class AppModelCUDAPIViewSet(
     )
     def get_meta_for_update(self, *args, **kwargs):
         """Returns the meta details for update from serializer."""
-        return self.send_response(
-            data=self.get_serializer(instance=self.get_object()).get_meta_for_update()
-        )
+        return self.send_response(data=self.get_serializer(instance=self.get_object()).get_meta_for_update())
 
 
-# Config for Meta fields to send for filters and other place where identity only used.
-DEFAULT_IDENTITY_DISPLAY_FIELDS = (
-    "id",
-    "identity",
-    "uuid",
-)
+class AppModelCreateAPIViewSet(
+    AppViewMixin,
+    CreateModelMixin,
+    AppGenericViewSet,
+):
+    """
+    Urls Allowed:
+        > POST: {endpoint}/
+            >> Get data from front-end and creates an object.
+        > GET: {endpoint}/meta/
+            >> Returns metadata for the front-end for object creation.
+    """
+
+    @action(
+        methods=["GET"],
+        url_path="meta",
+        detail=False,
+    )
+    def get_meta_for_create(self, *args, **kwargs):
+        """Returns the meta details for create from serializer."""
+
+        return self.send_response(data=self.get_serializer().get_meta_for_create())
 
 
 class AbstractLookUpFieldMixin:
@@ -230,9 +239,7 @@ def get_upload_api_view(meta_model, meta_fields=None):
 
             uploaded_file = request.data["file"]
             if uploaded_file.size > file_size_limit:
-                return self.send_error_response(
-                    data={"detail": "File size exceeds the limit of 5 MB"}
-                )
+                return self.send_error_response(data={"detail": "File size exceeds the limit of 5 MB"})
 
             return super().create(request, *args, **kwargs)
 

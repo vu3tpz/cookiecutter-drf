@@ -1,12 +1,13 @@
 from contextlib import suppress
 
-from apps.common.config import API_RESPONSE_ACTION_CODES
 from rest_framework import permissions, status
 from rest_framework.exceptions import MethodNotAllowed, NotFound
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.status import is_success
 from rest_framework.views import APIView
+
+from apps.common.config import API_RESPONSE_ACTION_CODES
 
 
 class NonAuthenticatedAPIMixin:
@@ -46,15 +47,14 @@ class AppViewMixin:
         return self.send_response(data=data, status_code=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def send_response(
-        data=None, status_code=status.HTTP_200_OK, action_code="DO_NOTHING", **other_response_data
-    ):
+    def send_response(data=None, status_code=status.HTTP_200_OK, action_code="DO_NOTHING", **other_response_data):
         """Custom function to send the centralized response."""
 
         return Response(
             data={
                 "data": data,
                 "status": "success" if is_success(status_code) else "error",
+                "status_code": status_code,
                 "action_code": action_code,  # make the FE do things based on this
                 **other_response_data,
             },
@@ -169,9 +169,7 @@ class AppAPIView(AppViewMixin, APIView):
         assert self.sync_action_class
 
         # pylint: disable=not-callable
-        success, result = self.sync_action_class(
-            instance=instance, request=self.get_request()
-        ).execute()
+        success, result = self.sync_action_class(instance=instance, request=self.get_request()).execute()
 
         if success:
             return self.send_response(data=result)
@@ -184,9 +182,7 @@ class AppAPIView(AppViewMixin, APIView):
         is a centralized function to do the same.
         """
         if self.get_object_model:
-            _object = self.get_object_model.objects.get_or_none(
-                **{identifier: self.kwargs[identifier]}
-            )
+            _object = self.get_object_model.objects.get_or_none(**{identifier: self.kwargs[identifier]})
 
             if not _object:
                 raise exception

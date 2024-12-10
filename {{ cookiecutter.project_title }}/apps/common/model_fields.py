@@ -1,9 +1,7 @@
-import uuid
-
-from apps.common.helpers import get_display_name_for_slug
-from apps.common.models import COMMON_CHAR_FIELD_MAX_LENGTH
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+
+from apps.common.helpers import get_display_name_for_slug
 
 
 class BaseField:
@@ -54,11 +52,7 @@ class AppSingleChoiceField(BaseField, models.CharField):
     def get_display_name(self, option):
         """Returns the display name for the given option."""
 
-        return (
-            self.options[option]
-            if self.type_of_options() in ["dict"]
-            else get_display_name_for_slug(option)
-        )
+        return self.options[option] if self.type_of_options() in ["dict"] else get_display_name_for_slug(option)
 
     def type_of_options(self):
         """
@@ -70,10 +64,7 @@ class AppSingleChoiceField(BaseField, models.CharField):
 
         if _type == "list":
             _option_to_consider = self.options[0]
-            if (
-                type(_option_to_consider) not in [str]
-                and type(_option_to_consider).__name__ == "tuple"
-            ):
+            if type(_option_to_consider) not in [str] and type(_option_to_consider).__name__ == "tuple":
                 _type = "list_of_tuples"
 
         return _type
@@ -110,23 +101,3 @@ class AppPhoneNumberField(BaseField, PhoneNumberField):
     """Applications version of the PhoneNumberField. To define app's functions."""
 
     pass
-
-
-class AppSingleFileField(BaseField, models.FileField):
-    """Field for uploading a single file. Sets the default upload path."""
-
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault("upload_to", "files/")
-        kwargs.setdefault("max_length", COMMON_CHAR_FIELD_MAX_LENGTH)
-        super().__init__(*args, **kwargs)
-
-    def pre_save(self, model_instance, add):
-        # Generate a new filename with UUID and keep the existing path
-        if model_instance.file:
-            _, extension = model_instance.file.name.split(".")
-            new_filename = f"{uuid.uuid4().hex}.{extension}"
-
-            # Set the new filename without changing the path
-            model_instance.file.name = f"{new_filename}"
-
-        return super().pre_save(model_instance, add)
