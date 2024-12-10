@@ -26,7 +26,6 @@ env.read_env(str(ROOT_DIR / ".env"))
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "{{ cookiecutter.timezone }}"
 USE_I18N = True
-USE_L10N = True
 USE_TZ = False
 
 # Apps
@@ -108,6 +107,18 @@ STATICFILES_FINDERS = [
 # ------------------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+DATABASES = {
+    # default database user and credentials | others are added on runtime
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.str("DATABASE_DB", default=""),
+        "USER": env.str("DATABASE_USER", default=""),
+        "PASSWORD": env.str("DATABASE_PASSWORD", default=""),
+        "HOST": env.str("DATABASE_HOST", default=""),
+        "PORT": env.str("DATABASE_PORT", default=""),
+    }
+}
+
 # App Super Admin
 # ------------------------------------------------------------------------------
 AUTH_USER_MODEL = "access.User"
@@ -167,7 +178,6 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
-ENV = env.str("ENV")
 
 # App Configurations
 # ------------------------------------------------------------------------------
@@ -182,4 +192,8 @@ AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_KEY")
 AWS_STORAGE_BUCKET_NAME = env.str("AWS_BUCKET_NAME")
 
 AWS_QUERYSTRING_AUTH = False
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+}

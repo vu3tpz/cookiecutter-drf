@@ -1,9 +1,10 @@
-from apps.common import model_fields
-from apps.common.config import CUSTOM_ERRORS_MESSAGES
 from django.db import models
 from rest_framework import serializers
 from rest_framework.fields import SkipField
 from rest_framework.serializers import ModelSerializer, Serializer
+
+from apps.common import model_fields
+from apps.common.config import CUSTOM_ERRORS_MESSAGES
 
 
 class CustomErrorMessagesMixin:
@@ -23,9 +24,7 @@ class CustomErrorMessagesMixin:
             if field.__class__.__name__ == "ManyRelatedField":
                 # many-to-many | uses foreign key field for children
                 field.error_messages.update(CUSTOM_ERRORS_MESSAGES["ManyRelatedField"])
-                field.child_relation.error_messages.update(
-                    CUSTOM_ERRORS_MESSAGES["PrimaryKeyRelatedField"]
-                )
+                field.child_relation.error_messages.update(CUSTOM_ERRORS_MESSAGES["PrimaryKeyRelatedField"])
             elif field.__class__.__name__ == "PrimaryKeyRelatedField":
                 # foreign-key
                 field.error_messages.update(CUSTOM_ERRORS_MESSAGES["PrimaryKeyRelatedField"])
@@ -226,9 +225,7 @@ class AppWriteOnlyModelSerializer(AppModelSerializer):
                     urls.extend(url_list)
 
                 # Handle ForeignKey case
-                elif (
-                    related_instance and hasattr(related_instance, "file") and related_instance.file
-                ):
+                elif related_instance and hasattr(related_instance, "file") and related_instance.file:
                     urls.append({field_name: related_instance.file.url, "id": related_instance.id})
 
         return urls
@@ -241,8 +238,7 @@ class AppWriteOnlyModelSerializer(AppModelSerializer):
 
         instance = self.instance
         initial = {
-            field_name: getattr(instance, field_name, None)
-            for field_name in ["id", "uuid", *self.fields.keys()]
+            field_name: getattr(instance, field_name, None) for field_name in ["id", "uuid", *self.fields.keys()]
         }
 
         # simplify for FE
@@ -284,9 +280,7 @@ class AppReadOnlyModelSerializer(AppModelSerializer):
         raise NotImplementedError
 
 
-def get_app_read_only_serializer(
-    meta_model, meta_fields=None, init_fields_config=None, queryset=None
-):
+def get_app_read_only_serializer(meta_model, meta_fields=None, init_fields_config=None, queryset=None):
     """
     Generates a `AppReadOnlyModelSerializer` on the runtime and returns the same.
     Just used for creating a light weigth stuff.
