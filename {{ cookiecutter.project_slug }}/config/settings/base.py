@@ -193,6 +193,9 @@ AWS_STORAGE_BUCKET_NAME = env.str("AWS_BUCKET_NAME")
 
 AWS_QUERYSTRING_AUTH = False
 STORAGES = {
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
     "default": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
     },
