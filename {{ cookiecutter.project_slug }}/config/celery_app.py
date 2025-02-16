@@ -2,10 +2,7 @@
 import os
 
 from celery import Celery
-from celery.schedules import crontab
 from django.utils.module_loading import import_string
-
-from config import settings
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
