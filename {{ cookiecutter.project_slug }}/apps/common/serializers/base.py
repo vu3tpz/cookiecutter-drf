@@ -203,8 +203,6 @@ class AppWriteOnlyModelSerializer(AppModelSerializer):
         Just used for displaying for the front-end.
         """
 
-        from apps.common.models import FileOnlyModel
-
         instance = self.instance
         urls = []
 
