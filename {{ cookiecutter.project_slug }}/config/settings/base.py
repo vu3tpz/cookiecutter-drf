@@ -46,7 +46,8 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     # Phone Number Field
     "phonenumber_field",
-    # For Static files
+    # Celery Beat
+    "django_celery_beat",
 ]
 
 CUSTOM_APPS = [
