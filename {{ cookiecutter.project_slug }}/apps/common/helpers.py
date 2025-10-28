@@ -51,3 +51,9 @@ def get_file_field_url(instance, field="image"):
         return getattr(instance, field).file.url
 
     return None
+
+
+def storage_file_path(instance, filename):
+    """Upload file in S3 on related path."""
+
+    return f"{instance.__class__.__name__}/{filename}".lower()
